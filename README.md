@@ -2,7 +2,7 @@
 
 ## Description
 
-**Dressify** is a web application built with the MERN stack (MongoDB, Express.js, React.js, Node.js,etc...) that allows users to virtually try on clothing by overlaying garment images onto their own photos. This platform offers a fun and interactive way to see how different outfits look on you before making a purchase, making online shopping more engaging and personalized.
+**Dressify** is a web application built with the MERN stack (MongoDB, Express.js, React.js, Node.js) that allows users to virtually try on clothing by overlaying garment images onto their own photos. This platform offers a fun and interactive way to see how different outfits look on you before making a purchase, making online shopping more engaging and personalized.
 
 ## Features
 
