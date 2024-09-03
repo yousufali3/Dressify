@@ -33,7 +33,7 @@ export default function Navbar() {
             </a>
             <a
               className="font-medium flex items-center text-base transition-colors hover:underline"
-              href="#"
+              href="about"
             >
               About
             </a>
