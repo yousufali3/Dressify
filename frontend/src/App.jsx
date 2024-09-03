@@ -1,6 +1,7 @@
 import Navbar from "./components/Navbar";
 import LandingPage from "./components/LandingPage";
 import Footer from "./components/Footer";
+import Example from "./components/Example";
 // import Footer from "./components/Footer";
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
     <div>
       <Navbar />
       <LandingPage />
+      <Example />
       <Footer />
     </div>
   );
