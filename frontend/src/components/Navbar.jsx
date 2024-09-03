@@ -3,68 +3,62 @@ import React from "react";
 export default function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
-      <div className="w-full px-8 mx-auto ">
-        {" "}
-        {/* Increased padding */}
+      <div className="w-full px-8 mx-auto">
         <div className="flex justify-between h-16 xl:ml-16 items-center">
-          {" "}
-          {/* Increased height */}
           <a className="flex items-center" href="#">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="28" /* Increased icon size */
-              height="28" /* Increased icon size */
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="h-7 w-7" /* Increased icon size */
+              className="h-7 w-7"
             >
               <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
             </svg>
             <span className="sr-only">Acme Inc</span>
           </a>
-          <nav className="hidden md:flex gap-[80px]">
+          <nav className="hidden md:flex gap-20">
             {" "}
             {/* Increased gap between links */}
             <a
-              className="font-medium flex items-center text-base transition-colors hover:underline" /* Increased text size */
+              className="font-medium flex items-center text-base transition-colors hover:underline"
               href="#"
             >
               Home
             </a>
             <a
-              className="font-medium flex items-center text-base transition-colors hover:underline" /* Increased text size */
+              className="font-medium flex items-center text-base transition-colors hover:underline"
               href="#"
             >
               About
             </a>
             <a
-              className="font-medium flex items-center text-base transition-colors hover:underline" /* Increased text size */
+              className="font-medium flex items-center text-base transition-colors hover:underline"
               href="#"
             >
               Services
             </a>
             <a
-              className="font-medium flex items-center text-base transition-colors hover:underline" /* Increased text size */
+              className="font-medium flex items-center text-base transition-colors hover:underline"
               href="#"
             >
               Contact
             </a>
           </nav>
           <div className="flex items-center gap-6">
-            {" "}
-            {/* Increased gap between buttons */}
             <button
               type="button"
-              class="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55 me-2 mb-2"
+              className="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
             >
               Get Started
             </button>
+            {/* Uncomment and modify the button if needed */}
             {/* <button className="inline-flex items-center justify-center whitespace-nowrap text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-4">
-              {" "}
               Sign up
             </button> */}
           </div>
