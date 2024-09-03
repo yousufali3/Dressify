@@ -1,16 +1,100 @@
-import React from "react";
+import React, { useState } from "react";
+import { Camera, X } from "lucide-react";
 
-export default function LandingPage() {
+export default function PhotoUploadAndResult() {
+  const [files, setFiles] = useState([null, null]);
+  const [resultImage, setResultImage] = useState(null);
+
+  const handleFileChange = (index, event) => {
+    const newFiles = [...files];
+    newFiles[index] = event.target.files[0];
+    console.log(newFiles[index]);
+    
+    setFiles(newFiles);
+
+    // If both files are uploaded, simulate processing
+    if (newFiles[0] && newFiles[1]) {
+      simulateImageProcessing();
+    }
+  };
+
+  const removeFile = (index) => {
+    const newFiles = [...files];
+    newFiles[index] = null;
+    setFiles(newFiles);
+    setResultImage(null);
+  };
+
+  const simulateImageProcessing = () => {
+    // In a real application, you would process the images here
+    // For now, we'll just use a placeholder
+    setTimeout(() => {
+      setResultImage("/api/placeholder/600/300");
+    }, 1000);
+  };
+
   return (
-    <section className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Our Website</h1>
-        <p className="text-lg mb-8">
-          Your journey to an amazing experience starts here.
+    <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-200 to-white p-4">
+      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-3xl mt-12"> {/* Re-added mt-12 for top margin */}
+        <h1 className="text-3xl font-bold mb-4 text-center text-gray-800">Upload Your Photos</h1>
+        <p className="text-lg mb-6 text-center text-gray-600">
+          Choose two photos to upload and process.
         </p>
-        <button className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-          Get Started
-        </button>
+        <div className="grid grid-cols-2 gap-6 mb-6">
+          {[0, 1].map((index) => (
+            <div key={index} className="relative">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFileChange(index, e)}
+                className="hidden"
+                id={`file-${index}`}
+              />
+              <label
+                htmlFor={`file-${index}`}
+                className="flex flex-col items-center justify-center w-full h-48 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+              >
+                {files[index] ? (
+                  <>
+                    <img
+                      src={URL.createObjectURL(files[index])}
+                      alt={`Upload ${index + 1}`}
+                      className="w-full h-full object-cover rounded-lg"
+                    />
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        removeFile(index);
+                      }}
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                    >
+                      <X size={16} />
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Camera className="w-16 h-16 text-gray-400" />
+                    <span className="mt-2 text-sm text-gray-500">Add Photo {index + 1}</span>
+                  </>
+                )}
+              </label>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">Result</h2>
+          {resultImage ? (
+            <img
+              src={resultImage}
+              alt="Processed Result"
+              className="w-full h-72 object-cover rounded-lg"
+            />
+          ) : (
+            <div className="w-full h-72 bg-gray-200 rounded-lg flex items-center justify-center">
+              <span className="text-gray-500">Upload two photos to see the result</span>
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );
