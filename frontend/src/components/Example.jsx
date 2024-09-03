@@ -34,7 +34,7 @@ const Example = () => {
   return (
     <div className="max-w-5xl w-[80vw] mx-auto p-4">
       <h2 className="text-center text-2xl font-bold mb-6">
-        Virtual try-on examples in pairs of person and garment images
+        Dressify examples in pairs of person and garment images
       </h2>
       <Table examples={examples} />
     </div>
