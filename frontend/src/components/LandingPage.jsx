@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Camera, X } from "lucide-react";
 import Example from "./Example";
+
 export default function PhotoUploadAndResult() {
   const [file1, setFile1] = useState(null);
   const [file2, setFile2] = useState(null);
@@ -62,14 +63,14 @@ export default function PhotoUploadAndResult() {
                 />
                 <label
                   htmlFor={`file-${index}`}
-                  className="flex flex-col items-center justify-center w-full h-48 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+                  className="flex flex-col items-center justify-center w-full h-80 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
                 >
                   {index === 1 && file1 ? (
                     <>
                       <img
                         src={URL.createObjectURL(file1)}
                         alt={`Person Image`}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-full object-contain rounded-lg"
                       />
                       <button
                         onClick={(e) => {
@@ -86,7 +87,7 @@ export default function PhotoUploadAndResult() {
                       <img
                         src={URL.createObjectURL(file2)}
                         alt={`Garment Image`}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-full object-contain rounded-lg"
                       />
                       <button
                         onClick={(e) => {
@@ -114,13 +115,15 @@ export default function PhotoUploadAndResult() {
                 Processed Image
               </h2>
               {resultImage ? (
-                <img
-                  src={resultImage}
-                  alt="Processed Result"
-                  className="w-full h-48 object-cover rounded-lg"
-                />
+                <div className="w-full h-80 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <img
+                    src={resultImage}
+                    alt="Processed Result"
+                    className="w-full h-full object-contain rounded-lg"
+                  />
+                </div>
               ) : (
-                <div className="w-full h-48 bg-gray-200 rounded-lg flex items-center justify-center">
+                <div className="w-full h-80 bg-gray-200 rounded-lg flex items-center justify-center">
                   <span className="text-gray-500">
                     Upload two photos to see the result
                   </span>
