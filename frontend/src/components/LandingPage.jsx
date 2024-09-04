@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Camera, X, Image } from "lucide-react"; // Added Image icon for examples
+import axios from "axios";
+import { Camera, X, Image, Download } from "lucide-react"; // Added Download icon
 import Example from "./Example";
 
 const predefinedPhotos = {
@@ -23,6 +24,7 @@ export default function LandingPage() {
   const [resultImage, setResultImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [timer, setTimer] = useState(60); // Timer in seconds
+  const [pngImageURL, setPngImageURL] = useState(null); // State for PNG image URL
 
   useEffect(() => {
     let interval;
@@ -31,7 +33,6 @@ export default function LandingPage() {
         setTimer((prevTimer) => {
           if (prevTimer <= 1) {
             clearInterval(interval);
-            setResultImage("/api/placeholder/600/300"); // Simulate processing result
             setIsProcessing(false);
             return 0;
           }
@@ -39,7 +40,7 @@ export default function LandingPage() {
         });
       }, 1000); // Update every second
     } else if (!isProcessing) {
-      setTimer(60); // Reset timer when processing is stopped
+      setTimer(120); // Reset timer when processing is stopped
     }
     return () => clearInterval(interval);
   }, [isProcessing, timer]);
@@ -72,14 +73,93 @@ export default function LandingPage() {
     setResultImage(null);
   };
 
-  const startProcessing = () => {
-    if (!file1 && !file2 && !resultImage) {
-      alert(
-        "Please upload or select both images before generating the result."
-      );
+  const startProcessing = async () => {
+    if (!file1 || !file2) {
+      alert("Please upload both images before generating the result.");
       return;
     }
+    console.log("pro");
+
+    const formData = new FormData();
+    formData.append("userPhoto", file1);
+    formData.append("garmentPhoto", file2);
+
     setIsProcessing(true);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const imageUrl = response.data.data.data[0].url; // Adjust according to your API response
+      setResultImage(imageUrl);
+
+      // Convert the image to PNG and store URL
+      convertImageToPNG(imageUrl);
+    } catch (error) {
+      console.error("Error uploading photos:", error);
+      alert("Failed to upload photos.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const convertImageToPNG = (imageUrl) => {
+    // Create an HTMLImageElement
+    const img = document.createElement("img");
+    img.crossOrigin = "Anonymous"; // Handle CORS issues
+    img.src = imageUrl;
+
+    img.onload = () => {
+      // Create a canvas element
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas dimensions to match image
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+
+      // Draw the image onto the canvas
+      ctx.drawImage(img, 0, 0);
+
+      // Convert canvas to PNG
+      const dataURL = canvas.toDataURL("image/png");
+      setPngImageURL(dataURL); // Set the PNG image URL
+    };
+
+    // Handle image loading errors
+    img.onerror = () => {
+      alert("Failed to convert image to PNG.");
+    };
+  };
+
+  const handleButtonClick = () => {
+    if (isProcessing) return;
+    if (resultImage) {
+      downloadImage();
+    } else {
+      startProcessing();
+    }
+  };
+
+  const downloadImage = () => {
+    if (!pngImageURL) return;
+
+    // Create a link element for download
+    const link = document.createElement("a");
+    link.href = pngImageURL;
+    link.download = "result-image.png"; // Set the desired file name and format
+
+    // Trigger download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -188,7 +268,7 @@ export default function LandingPage() {
               <h2 className="text-xl font-semibold mb-4 text-center text-gray-800">
                 Click "Generate" to see your results
               </h2>
-              <div className="w-full h-80 bg-gray-100 rounded-lg flex flex-col items-center justify-center">
+              <div className="w-full h-80 bg-gray-100 rounded-lg flex flex-col items-center justify-center relative">
                 {isProcessing ? (
                   <>
                     <div className="spinner"></div> {/* Spinner */}
@@ -197,11 +277,19 @@ export default function LandingPage() {
                     </span>
                   </>
                 ) : resultImage ? (
-                  <img
-                    src={resultImage}
-                    alt="Processed Result"
-                    className="w-full h-full object-contain rounded-lg"
-                  />
+                  <>
+                    <img
+                      src={resultImage}
+                      alt="Processed Result"
+                      className="w-full h-full object-contain rounded-lg"
+                    />
+                    <button
+                      onClick={downloadImage}
+                      className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1 hover:bg-blue-600 transition-colors"
+                    >
+                      <Download size={16} />
+                    </button>
+                  </>
                 ) : (
                   <div className="w-full h-full bg-gray-200 rounded-lg flex items-center justify-center">
                     <div className="flex items-center gap-2">
@@ -212,16 +300,19 @@ export default function LandingPage() {
                     </div>
                   </div>
                 )}
-                {!isProcessing && (
-                  <div className="mt-6">
-                    <button
-                      onClick={startProcessing}
-                      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                    >
-                      Generate
-                    </button>
-                  </div>
-                )}
+              </div>
+              <div className="mt-6 ml-[35%]">
+                <button
+                  onClick={handleButtonClick}
+                  disabled={isProcessing ? true : false}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  {isProcessing
+                    ? "Generate..."
+                    : resultImage
+                    ? "Download"
+                    : "Generate"}
+                </button>
               </div>
             </div>
           </div>
