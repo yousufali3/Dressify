@@ -2,7 +2,7 @@ import React from 'react';
 
 const Service = () => {
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <section className="flex flex-col items-center justify-center min-h-screen mt-12 bg-gray-100 p-4">
       <h1 className="text-3xl font-bold mb-8 text-center text-gray-800">Our Services</h1>
       <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-4xl">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Transform Your Look with AI</h2>
