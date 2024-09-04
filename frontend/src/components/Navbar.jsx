@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full px-8 mx-auto">
         <div className="flex justify-between h-16 xl:ml-16 items-center">
-          <a className="flex items-center" href="#">
+          <Link className="flex items-center" to="/">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="28"
@@ -21,34 +22,39 @@ export default function Navbar() {
               <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
             </svg>
             <span className="sr-only">Acme Inc</span>
-          </a>
+          </Link>
           <nav className="hidden md:flex gap-20">
-            {" "}
             {/* Increased gap between links */}
-            <a
+            <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
-              href="#"
+              to="/"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
-              href="about"
+              to="/about"
             >
               About
-            </a>
-            <a
+            </Link>
+            <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
-              href="#"
+              to="/services"
             >
               Services
-            </a>
-            <a
+            </Link>
+            <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
-              href="#"
+              to="/contact"
             >
               Contact
-            </a>
+            </Link>
+            <Link
+              className="font-medium flex items-center text-base transition-colors hover:underline"
+              to="/developers"
+            >
+              Developers
+            </Link>
           </nav>
           <div className="flex items-center gap-6">
             <button
