@@ -19,6 +19,23 @@ import m13 from "/src/assets/m10.png";
 import m14 from "/src/assets/m11.png";
 import m15 from "/src/assets/m12.png";
 import m16 from "/src/assets/m13.jpg";
+
+import g1 from "/src/assets/g1.jpeg";
+import g2 from "/src/assets/g2.jpg";
+import g3 from "/src/assets/g3.jpeg";
+import g4 from "/src/assets/g4.jpeg";
+import g5 from "/src/assets/m17.jpg";
+import g6 from "/src/assets/g7.jpeg";
+import g7 from "/src/assets/g8.jpeg";
+import g8 from "/src/assets/g9.jpeg";
+import g9 from "/src/assets/g10.jpeg";
+import g10 from "/src/assets/g11.jpeg";
+import g11 from "/src/assets/g12.jpeg";
+import g12 from "/src/assets/g13.jpeg";
+import g13 from "/src/assets/g14.jpeg";
+import g14 from "/src/assets/k1.jpeg";
+import g15 from "/src/assets/k2.jpeg";
+import g16 from "/src/assets/k3.jpeg";
 const predefinedPhotos = {
   person: [
     m1,
@@ -39,11 +56,11 @@ const predefinedPhotos = {
     m16,
   ],
   garment: [
-    "/src/assets/g1.jpeg",
-    "/src/assets/g2.jpg",
-    "/src/assets/g3.jpeg",
-    "/src/assets/g4.jpeg",
-    "/src/assets/m17.jpg",
+    g1,
+    g2,
+    g3,
+    g4,
+    g5,
     "/src/assets/g7.jpeg",
     "/src/assets/g8.jpeg",
     "/src/assets/g9.jpeg",
