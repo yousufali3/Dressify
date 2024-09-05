@@ -1,16 +1,16 @@
 import React from "react";
 import Table from "./Table";
-import model1 from "../assets/model1.png";
-import model2 from "../assets/model2.png";
-import model3 from "../assets/model3.png";
+import model1 from "../assets/m1.png";
+import model2 from "../assets/m7.jpg";
+import model3 from "../assets/m6.jpg";
 
-import garment1 from "../assets/garment1.png";
-import garment2 from "../assets/garment2.png";
-import garment3 from "../assets/garment3.png";
+import garment1 from "../assets/g10.jpeg";
+import garment2 from "../assets/k3.jpeg";
+import garment3 from "../assets/k2.jpeg";
 
-import result1 from "../assets/result1.png";
-import result2 from "../assets/result2.png";
-import result3 from "../assets/result3.png";
+import result1 from "../assets/r1s.png";
+import result2 from "../assets/r2.png";
+import result3 from "../assets/r3.png";
 
 const Example = () => {
   const examples = [

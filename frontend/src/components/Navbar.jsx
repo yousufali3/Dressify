@@ -21,10 +21,11 @@ export default function Navbar() {
             >
               <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
             </svg>
-            <span className="sr-only">Acme Inc</span>
+            <span className="ml-2 text-xl font-semibold text-gray-900 dark:text-white">
+              Dressify
+            </span>
           </Link>
           <nav className="hidden md:flex gap-20">
-            {/* Increased gap between links */}
             <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
               to="/"
@@ -59,19 +60,10 @@ export default function Navbar() {
           <div className="flex items-center gap-6">
             <button
               type="button"
-              
               className="text-white bg-[#1da1f2] hover:bg-[#1da1f2]/90 focus:ring-4 focus:outline-none focus:ring-[#1da1f2]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#1da1f2]/55"
             >
-             <Link
-             to='/'
-             >
-             Get Started
-             </Link>
+              <Link to="/">Get Started</Link>
             </button>
-            {/* Uncomment and modify the button if needed */}
-            {/* <button className="inline-flex items-center justify-center whitespace-nowrap text-base font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 rounded-md px-4">
-              Sign up
-            </button> */}
           </div>
         </div>
       </div>

@@ -6,11 +6,14 @@ import { log } from "util";
 
 // Handle the photo uploads and interaction with Kwai-Kolors/Kolors-Virtual-Try-On API
 export const uploadPhotos = async (req, res) => {
+  let userPhotoPath;
+  let garmentPhotoPath;
+
   try {
     // Multer stores the uploaded files' information in req.files
-    const userPhotoPath = req.files["userPhoto"][0].path;
-    const garmentPhotoPath = req.files["garmentPhoto"][0].path;
-    console.log(req.files);
+    userPhotoPath = req.files["userPhoto"][0].path;
+    garmentPhotoPath = req.files["garmentPhoto"][0].path;
+    // console.log(req.files);
 
     // Read the files to send as blobs
     const userPhotoBlob = fs.readFileSync(userPhotoPath);
@@ -27,11 +30,7 @@ export const uploadPhotos = async (req, res) => {
       randomize_seed: true,
     });
 
-    console.log(result);
-
-    // Delete the uploaded files after processing
-    fs.unlinkSync(userPhotoPath);
-    fs.unlinkSync(garmentPhotoPath);
+    // console.log(result);
 
     // Return the response from API
     res.status(200).json({
@@ -44,5 +43,13 @@ export const uploadPhotos = async (req, res) => {
       message: "Server Error",
       error: error.message,
     });
+  } finally {
+    // Delete the uploaded files after processing
+    try {
+      if (userPhotoPath) fs.unlinkSync(userPhotoPath);
+      if (garmentPhotoPath) fs.unlinkSync(garmentPhotoPath);
+    } catch (unlinkError) {
+      console.error("Error deleting files:", unlinkError.message);
+    }
   }
 };

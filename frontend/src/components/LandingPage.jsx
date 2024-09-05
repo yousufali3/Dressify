@@ -1,19 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Camera, X, Image, Download } from "lucide-react"; // Added Download icon
-import Example from "./Example";
-import person1 from "../assets/000.png";
-import person2 from "../assets/001.png";
-import person3 from "../assets/002.png";
-import person4 from "../assets/003.png";
-
-import garment1 from "../assets/02_upper.png";
-import garment2 from "../assets/03_upper.jpg";
-import garment3 from "../assets/06_upper.png";
-import garment4 from "../assets/09_upper.png";
+import { Camera, X, Image, Download, Rocket } from "lucide-react";
+import Example from "../components/Example";
 const predefinedPhotos = {
-  person: [person1, person2, person3, person4],
-  garment: [garment1, garment2, garment3, garment4],
+  person: [
+    "/src/assets/m2.png",
+    "/src/assets/m3.webp",
+    "/src/assets/009.jpg",
+    "/src/assets/sm-pic2.webp",
+    "/src/assets/m4.png",
+    "/src/assets/m5.png",
+    "/src/assets/m14.png",
+    "/src/assets/m6.jpg",
+    "/src/assets/m7.jpg",
+    "/src/assets/m8.jpg",
+    "/src/assets/m1.png",
+    "/src/assets/m9.png",
+    "/src/assets/m10.png",
+    "/src/assets/m11.png",
+    "/src/assets/m12.png",
+    "/src/assets/m13.jpg",
+  ],
+  garment: [
+    "/src/assets/g1.jpeg",
+    "/src/assets/g2.jpg",
+    "/src/assets/g3.jpeg",
+    "/src/assets/g4.jpeg",
+    "/src/assets/m17.jpg",
+    "/src/assets/g7.jpeg",
+    "/src/assets/g8.jpeg",
+    "/src/assets/g9.jpeg",
+    "/src/assets/g10.jpeg",
+    "/src/assets/g11.jpeg",
+    "/src/assets/g13.jpeg",
+    "/src/assets/g14.jpeg",
+    "/src/assets/g15.jpeg",
+    "/src/assets/k1.jpeg",
+    "/src/assets/k2.jpeg",
+    "/src/assets/k3.jpeg",
+  ],
 };
 
 export default function LandingPage() {
@@ -21,8 +46,8 @@ export default function LandingPage() {
   const [file2, setFile2] = useState(null);
   const [resultImage, setResultImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [timer, setTimer] = useState(60); // Timer in seconds
-  const [pngImageURL, setPngImageURL] = useState(null); // State for PNG image URL
+  const [timer, setTimer] = useState(0); // Timer in seconds
+  const [pngImageURL, setPngImageURL] = useState(null); // PNG image URL
 
   useEffect(() => {
     let interval;
@@ -38,7 +63,7 @@ export default function LandingPage() {
         });
       }, 1000); // Update every second
     } else if (!isProcessing) {
-      setTimer(120); // Reset timer when processing is stopped
+      setTimer(100); // Reset timer when processing is stopped
     }
     return () => clearInterval(interval);
   }, [isProcessing, timer]);
@@ -52,21 +77,16 @@ export default function LandingPage() {
     }
   };
 
-  const handlePredefinedSelect = (index, url) => {
-    console.log("Clicked predefined image", index, url);
-
-    // Create a Blob object from the URL to simulate a file upload
+  const handlePredefinedSelect = (index, type, url) => {
     fetch(url)
       .then((res) => res.blob())
       .then((blob) => {
         const file = new File([blob], url.split("/").pop(), {
           type: blob.type,
         });
-
-        // Update the correct file state based on the index
-        if (index === 1) {
+        if (type === "person") {
           setFile1(file);
-        } else if (index === 2) {
+        } else if (type === "garment") {
           setFile2(file);
         }
       })
@@ -89,62 +109,52 @@ export default function LandingPage() {
       alert("Please upload both images before generating the result.");
       return;
     }
-    console.log("pro");
 
     const formData = new FormData();
     formData.append("userPhoto", file1);
     formData.append("garmentPhoto", file2);
 
     setIsProcessing(true);
+    setTimer(100); // Set the timer when processing starts
 
     try {
       const response = await axios.post(
         "http://localhost:5000/api/upload",
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
         }
       );
 
       const imageUrl = response.data.data.data[0].url; // Adjust according to your API response
       setResultImage(imageUrl);
-
-      // Convert the image to PNG and store URL
       convertImageToPNG(imageUrl);
     } catch (error) {
       console.error("Error uploading photos:", error);
-      alert(error);
+      alert("Error uploading photos. Please try again.");
     } finally {
       setIsProcessing(false);
     }
   };
 
   const convertImageToPNG = (imageUrl) => {
-    // Create an HTMLImageElement
     const img = document.createElement("img");
-    img.crossOrigin = "Anonymous"; // Handle CORS issues
+    img.crossOrigin = "Anonymous";
     img.src = imageUrl;
 
     img.onload = () => {
-      // Create a canvas element
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
-      // Set canvas dimensions to match image
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
 
-      // Draw the image onto the canvas
       ctx.drawImage(img, 0, 0);
 
-      // Convert canvas to PNG
       const dataURL = canvas.toDataURL("image/png");
-      setPngImageURL(dataURL); // Set the PNG image URL
+      setPngImageURL(dataURL);
     };
 
-    // Handle image loading errors
     img.onerror = () => {
       alert("Failed to convert image to PNG.");
     };
@@ -152,26 +162,22 @@ export default function LandingPage() {
 
   const handleButtonClick = () => {
     if (isProcessing) return;
-    if (resultImage) {
-      downloadImage();
-    } else {
-      startProcessing();
-    }
+    startProcessing();
   };
 
   const downloadImage = () => {
     if (!pngImageURL) return;
 
-    // Create a link element for download
     const link = document.createElement("a");
     link.href = pngImageURL;
-    link.download = "result-image.png"; // Set the desired file name and format
+    link.download = "result-image.png";
 
-    // Trigger download
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
+
+  const getButtonLabel = () => (isProcessing ? "Generating..." : "Generate");
 
   return (
     <>
@@ -239,14 +245,13 @@ export default function LandingPage() {
                     </>
                   ) : (
                     <>
-                      <Camera className="w-16 h-16 text-gray-400" />
+                      <Camera size={48} className="w-16 h-16 text-gray-400" />
                       <span className="mt-2 text-sm text-gray-500">
                         Add Photo {index}
                       </span>
                     </>
                   )}
                 </label>
-                {/* Predefined Photos */}
                 <div className="mt-4">
                   <h3 className="text-lg font-semibold text-gray-700 flex items-center gap-2">
                     <Image size={24} className="text-gray-600" />
@@ -254,22 +259,27 @@ export default function LandingPage() {
                   </h3>
                   <div className="border border-gray-300 rounded-lg p-2">
                     <div className="grid grid-cols-4 gap-2 mt-2">
-                      {" "}
-                      {/* Updated to gap-2 */}
                       {(index === 1
                         ? predefinedPhotos.person
                         : predefinedPhotos.garment
                       ).map((url, i) => (
-                        <div key={i} className="relative group">
+                        <div
+                          key={i}
+                          className="relative group cursor-pointer"
+                          onClick={() =>
+                            handlePredefinedSelect(
+                              index,
+                              index === 1 ? "person" : "garment",
+                              url
+                            )
+                          }
+                        >
                           <img
                             src={url}
                             alt={`Example ${
                               index === 1 ? "Person" : "Garment"
                             } ${i + 1}`}
                             className="w-full h-24 object-contain border border-gray-300 rounded-lg transition-transform transform group-hover:scale-105"
-                            onClick={() => {
-                              alert("hi");
-                            }}
                           />
                           <div className="absolute inset-0 bg-gray-500 opacity-0 group-hover:opacity-50 transition-opacity rounded-lg"></div>
                         </div>
@@ -297,6 +307,7 @@ export default function LandingPage() {
                       src={resultImage}
                       alt="Processed Result"
                       className="w-full h-full object-contain rounded-lg"
+                      loading="lazy"
                     />
                     <button
                       onClick={downloadImage}
@@ -319,23 +330,18 @@ export default function LandingPage() {
               <div className="mt-6 ml-[35%]">
                 <button
                   onClick={handleButtonClick}
-                  disabled={isProcessing ? true : false}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  disabled={isProcessing}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
                 >
-                  {isProcessing
-                    ? "Generate..."
-                    : resultImage
-                    ? "Download"
-                    : "Generate"}
+                  <Rocket size={16} />
+                  {getButtonLabel()}
                 </button>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <section>
-        <Example />
-      </section>
+      <Example />
     </>
   );
 }
