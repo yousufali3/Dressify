@@ -119,7 +119,7 @@ export default function LandingPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/upload",
+        "http://localhost:3000/api/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -166,11 +166,15 @@ export default function LandingPage() {
   };
 
   const downloadImage = () => {
-    if (!pngImageURL) return;
+    if (!pngImageURL || !file1) return; // Ensure both the PNG URL and person file exist
 
+    // Get the original file name of the person photo (excluding the extension)
+    const originalFileName = file1.name.split(".").slice(0, -1).join(".");
+
+    // Create the download link with the original file name and the .png extension
     const link = document.createElement("a");
     link.href = pngImageURL;
-    link.download = "result-image.png";
+    link.download = `${originalFileName}.png`; // Use the original file name with .png extension
 
     document.body.appendChild(link);
     link.click();

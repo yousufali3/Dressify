@@ -8,12 +8,13 @@ import { log } from "util";
 export const uploadPhotos = async (req, res) => {
   let userPhotoPath;
   let garmentPhotoPath;
+  console.log(req.files);
 
   try {
     // Multer stores the uploaded files' information in req.files
     userPhotoPath = req.files["userPhoto"][0].path;
     garmentPhotoPath = req.files["garmentPhoto"][0].path;
-    // console.log(req.files);
+    console.log(req.files);
 
     // Read the files to send as blobs
     const userPhotoBlob = fs.readFileSync(userPhotoPath);

@@ -4,9 +4,10 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import uploadRoutes from "./routes/uploadRoute.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Define __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +22,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/upload", uploadRoutes);
+
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
