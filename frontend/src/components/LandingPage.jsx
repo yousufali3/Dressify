@@ -4,25 +4,39 @@ import { Camera, X, Image, Download, Rocket } from "lucide-react";
 import Example from "../components/Example";
 import api from "../../config/api";
 import m1 from "/src/assets/m2.png";
-
+import m2 from "/src/assets/m3.webp";
+import m3 from "/src/assets/009.jpg";
+import m4 from "/src/assets/sm-pic2.webp";
+import m5 from "/src/assets/m4.png";
+import m6 from "/src/assets/m5.png";
+import m7 from "/src/assets/m14.png";
+import m8 from "/src/assets/m6.jpg";
+import m9 from "/src/assets/m7.jpg";
+import m10 from "/src/assets/m8.jpg";
+import m11 from "/src/assets/m1.png";
+import m12 from "/src/assets/m9.png";
+import m13 from "/src/assets/m10.png";
+import m14 from "/src/assets/m11.png";
+import m15 from "/src/assets/m12.png";
+import m16 from "/src/assets/m13.jpg";
 const predefinedPhotos = {
   person: [
     m1,
-    "/src/assets/m3.webp",
-    "/src/assets/009.jpg",
-    "/src/assets/sm-pic2.webp",
-    "/src/assets/m4.png",
-    "/src/assets/m5.png",
-    "/src/assets/m14.png",
-    "/src/assets/m6.jpg",
-    "/src/assets/m7.jpg",
-    "/src/assets/m8.jpg",
-    "/src/assets/m1.png",
-    "/src/assets/m9.png",
-    "/src/assets/m10.png",
-    "/src/assets/m11.png",
-    "/src/assets/m12.png",
-    "/src/assets/m13.jpg",
+    m2,
+    m3,
+    m4,
+    m5,
+    m6,
+    m7,
+    m8,
+    m9,
+    m10,
+    m11,
+    m12,
+    m13,
+    m14,
+    m15,
+    m16,
   ],
   garment: [
     "/src/assets/g1.jpeg",
