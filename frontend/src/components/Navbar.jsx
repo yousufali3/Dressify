@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full px-8 mx-auto">
@@ -25,6 +27,8 @@ export default function Navbar() {
               Dressify
             </span>
           </Link>
+
+          {/* Links for desktop view */}
           <nav className="hidden md:flex gap-20">
             <Link
               className="font-medium flex items-center text-base transition-colors hover:underline"
@@ -57,6 +61,7 @@ export default function Navbar() {
               Developers
             </Link>
           </nav>
+
           <div className="flex items-center gap-6">
             <button
               type="button"
@@ -64,8 +69,81 @@ export default function Navbar() {
             >
               <Link to="/">Get Started</Link>
             </button>
+
+            {/* Hamburger icon (visible on mobile) */}
+            <div className="md:hidden flex items-center">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="text-gray-900 dark:text-white focus:outline-none"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {isOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16m-7 6h7"
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden ml-5 mt-4 space-y-2">
+            <Link
+              className="block font-medium text-base transition-colors hover:underline"
+              to="/"
+              onClick={() => setIsOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              className="block font-medium text-base transition-colors hover:underline"
+              to="/about"
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </Link>
+            <Link
+              className="block font-medium text-base transition-colors hover:underline"
+              to="/services"
+              onClick={() => setIsOpen(false)}
+            >
+              Services
+            </Link>
+            <Link
+              className="block font-medium text-base transition-colors hover:underline"
+              to="/contact"
+              onClick={() => setIsOpen(false)}
+            >
+              Contact
+            </Link>
+            <Link
+              className="block font-medium text-base transition-colors hover:underline"
+              to="/developers"
+              onClick={() => setIsOpen(false)}
+            >
+              Developers
+            </Link>
+          </div>
+        )}
       </div>
     </nav>
   );

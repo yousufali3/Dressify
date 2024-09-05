@@ -63,7 +63,7 @@ export default function LandingPage() {
         });
       }, 1000); // Update every second
     } else if (!isProcessing) {
-      setTimer(100); // Reset timer when processing is stopped
+      setTimer(120); // Reset timer when processing is stopped
     }
     return () => clearInterval(interval);
   }, [isProcessing, timer]);
@@ -115,7 +115,7 @@ export default function LandingPage() {
     formData.append("garmentPhoto", file2);
 
     setIsProcessing(true);
-    setTimer(100); // Set the timer when processing starts
+    setTimer(120); // Set the timer when processing starts
 
     try {
       const response = await axios.post(
