@@ -157,6 +157,8 @@ export default function LandingPage() {
   };
 
   const convertImageToPNG = (imageUrl) => {
+    console.log(imageUrl);
+
     const img = document.createElement("img");
     img.crossOrigin = "Anonymous";
     img.src = imageUrl;
