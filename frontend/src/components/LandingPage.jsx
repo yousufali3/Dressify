@@ -2,20 +2,18 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Camera, X, Image, Download } from "lucide-react"; // Added Download icon
 import Example from "./Example";
+import person1 from "../assets/000.png";
+import person2 from "../assets/001.png";
+import person3 from "../assets/002.png";
+import person4 from "../assets/003.png";
 
+import garment1 from "../assets/02_upper.png";
+import garment2 from "../assets/03_upper.jpg";
+import garment3 from "../assets/06_upper.png";
+import garment4 from "../assets/09_upper.png";
 const predefinedPhotos = {
-  person: [
-    "/path/to/person1.jpg",
-    "/path/to/person2.jpg",
-    "/path/to/person3.jpg",
-    "/path/to/person4.jpg",
-  ],
-  garment: [
-    "/path/to/garment1.jpg",
-    "/path/to/garment2.jpg",
-    "/path/to/garment3.jpg",
-    "/path/to/garment4.jpg",
-  ],
+  person: [person1, person2, person3, person4],
+  garment: [garment1, garment2, garment3, garment4],
 };
 
 export default function LandingPage() {
@@ -55,13 +53,26 @@ export default function LandingPage() {
   };
 
   const handlePredefinedSelect = (index, url) => {
-    if (index === 1) {
-      setFile1(null);
-      setResultImage(url); // Set the predefined image as result
-    } else if (index === 2) {
-      setFile2(null);
-      setResultImage(url); // Set the predefined image as result
-    }
+    console.log("Clicked predefined image", index, url);
+
+    // Create a Blob object from the URL to simulate a file upload
+    fetch(url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const file = new File([blob], url.split("/").pop(), {
+          type: blob.type,
+        });
+
+        // Update the correct file state based on the index
+        if (index === 1) {
+          setFile1(file);
+        } else if (index === 2) {
+          setFile2(file);
+        }
+      })
+      .catch((error) => {
+        console.error("Error creating file from predefined image:", error);
+      });
   };
 
   const removeFile = (index) => {
@@ -104,7 +115,7 @@ export default function LandingPage() {
       convertImageToPNG(imageUrl);
     } catch (error) {
       console.error("Error uploading photos:", error);
-      alert("Failed to upload photos.");
+      alert(error);
     } finally {
       setIsProcessing(false);
     }
@@ -241,8 +252,10 @@ export default function LandingPage() {
                     <Image size={24} className="text-gray-600" />
                     Example {index === 1 ? "Person" : "Garment"} Photos
                   </h3>
-                  <div className="border border-gray-300 rounded-lg p-4">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-2">
+                  <div className="border border-gray-300 rounded-lg p-2">
+                    <div className="grid grid-cols-4 gap-2 mt-2">
+                      {" "}
+                      {/* Updated to gap-2 */}
                       {(index === 1
                         ? predefinedPhotos.person
                         : predefinedPhotos.garment
@@ -253,8 +266,10 @@ export default function LandingPage() {
                             alt={`Example ${
                               index === 1 ? "Person" : "Garment"
                             } ${i + 1}`}
-                            className="w-full h-24 object-cover border border-gray-300 rounded-lg transition-transform transform group-hover:scale-105"
-                            onClick={() => handlePredefinedSelect(index, url)}
+                            className="w-full h-24 object-contain border border-gray-300 rounded-lg transition-transform transform group-hover:scale-105"
+                            onClick={() => {
+                              alert("hi");
+                            }}
                           />
                           <div className="absolute inset-0 bg-gray-500 opacity-0 group-hover:opacity-50 transition-opacity rounded-lg"></div>
                         </div>
