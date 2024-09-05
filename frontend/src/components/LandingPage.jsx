@@ -36,6 +36,7 @@ import g13 from "/src/assets/g14.jpeg";
 import g14 from "/src/assets/k1.jpeg";
 import g15 from "/src/assets/k2.jpeg";
 import g16 from "/src/assets/k3.jpeg";
+
 const predefinedPhotos = {
   person: [
     m1,
@@ -80,27 +81,16 @@ export default function LandingPage() {
   const [file2, setFile2] = useState(null);
   const [resultImage, setResultImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [timer, setTimer] = useState(0); // Timer in seconds
   const [pngImageURL, setPngImageURL] = useState(null); // PNG image URL
 
   useEffect(() => {
-    let interval;
-    if (isProcessing && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => {
-          if (prevTimer <= 1) {
-            clearInterval(interval);
-            setIsProcessing(false);
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000); // Update every second
-    } else if (!isProcessing) {
-      setTimer(120); // Reset timer when processing is stopped
-    }
-    return () => clearInterval(interval);
-  }, [isProcessing, timer]);
+    // Clean up object URL if resultImage changes
+    return () => {
+      if (resultImage) {
+        URL.revokeObjectURL(resultImage);
+      }
+    };
+  }, [resultImage]);
 
   const handleFileChange = (index, event) => {
     const file = event.target.files[0];
@@ -149,7 +139,6 @@ export default function LandingPage() {
     formData.append("garmentPhoto", file2);
 
     setIsProcessing(true);
-    setTimer(120); // Set the timer when processing starts
 
     try {
       const response = await axios.post(api, formData, {
@@ -332,12 +321,7 @@ export default function LandingPage() {
               </h2>
               <div className="w-full h-80 bg-gray-100 rounded-lg flex flex-col items-center justify-center relative">
                 {isProcessing ? (
-                  <>
-                    <div className="spinner"></div> {/* Spinner */}
-                    <span className="text-gray-500 mt-4">
-                      Generating... {timer}s
-                    </span>
-                  </>
+                  <div className="spinner"></div>
                 ) : resultImage ? (
                   <>
                     <img
