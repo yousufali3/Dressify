@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Camera, X, Image, Download, Rocket } from "lucide-react";
 import Example from "../components/Example";
+import api from "../../config/api";
+
 const predefinedPhotos = {
   person: [
     "/src/assets/m2.png",
@@ -118,20 +120,16 @@ export default function LandingPage() {
     setTimer(120); // Set the timer when processing starts
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(api, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const imageUrl = response.data.data.data[0].url; // Adjust according to your API response
       setResultImage(imageUrl);
       convertImageToPNG(imageUrl);
     } catch (error) {
       console.error("Error uploading photos:", error);
-      alert("Error uploading photos. Please try again.");
+      alert(error);
     } finally {
       setIsProcessing(false);
     }
@@ -179,6 +177,9 @@ export default function LandingPage() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Revoke the object URL to release memory
+    URL.revokeObjectURL(pngImageURL);
   };
 
   const getButtonLabel = () => (isProcessing ? "Generating..." : "Generate");

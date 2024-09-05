@@ -31,14 +31,14 @@ export const uploadPhotos = async (req, res) => {
       randomize_seed: true,
     });
 
-    // console.log(result);
-
     // Return the response from API
     res.status(200).json({
       success: true,
       data: result,
     });
   } catch (error) {
+    // Improved error handling
+    console.error("Error during photo upload or API call:", error.message);
     res.status(500).json({
       success: false,
       message: "Server Error",
