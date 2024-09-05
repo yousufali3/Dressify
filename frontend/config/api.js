@@ -1,5 +1,5 @@
 import React from "react";
 
-const api = "http://localhost:3000/api/upload";
+const api = "https://dressify-backend.onrender.com/api/upload";
 
 export default api;
