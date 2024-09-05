@@ -3,10 +3,11 @@ import axios from "axios";
 import { Camera, X, Image, Download, Rocket } from "lucide-react";
 import Example from "../components/Example";
 import api from "../../config/api";
+import m1 from "/src/assets/m2.png";
 
 const predefinedPhotos = {
   person: [
-    "/src/assets/m2.png",
+    m1,
     "/src/assets/m3.webp",
     "/src/assets/009.jpg",
     "/src/assets/sm-pic2.webp",
@@ -129,7 +130,7 @@ export default function LandingPage() {
       convertImageToPNG(imageUrl);
     } catch (error) {
       console.error("Error uploading photos:", error);
-      alert(error);
+      alert("Too many users, please try again later");
     } finally {
       setIsProcessing(false);
     }
