@@ -275,7 +275,7 @@ export default function LandingPage() {
                     <>
                       <Camera size={48} className="w-16 h-16 text-gray-400" />
                       <span className="mt-2 text-sm text-gray-500">
-                        Add Photo {index}
+                        Upload {index === 1 ? "Person" : "Garment"} Photo
                       </span>
                     </>
                   )}
