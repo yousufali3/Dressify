@@ -10,7 +10,7 @@ const Footer = () => {
             href="https://flowbite.com/"
             className="hover:underline font-semibold"
           >
-            Flowbite™
+            Dressify™
           </a>
           . All Rights Reserved.
         </span>
