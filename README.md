@@ -1,4 +1,4 @@
-﻿# Dressify
+# Dressify
 
 ## Description
 
@@ -100,3 +100,4 @@ We welcome contributions to **Dressify**! If you have an idea for a new feature 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+#

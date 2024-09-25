@@ -2,42 +2,77 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Camera, X, Image, Download, Rocket } from "lucide-react";
 import Example from "../components/Example";
+import api from "../../config/api";
+import m1 from "/src/assets/m2.png";
+import m2 from "/src/assets/m3.webp";
+import m3 from "/src/assets/009.jpg";
+import m4 from "/src/assets/sm-pic2.webp";
+import m5 from "/src/assets/m4.png";
+import m6 from "/src/assets/m5.png";
+import m7 from "/src/assets/m14.png";
+import m8 from "/src/assets/m6.jpg";
+import m9 from "/src/assets/m7.jpg";
+import m10 from "/src/assets/m8.jpg";
+import m11 from "/src/assets/m1.png";
+import m12 from "/src/assets/m9.png";
+import m13 from "/src/assets/m10.png";
+import m14 from "/src/assets/m11.png";
+import m15 from "/src/assets/m12.png";
+import m16 from "/src/assets/m13.jpg";
+
+import g1 from "/src/assets/g1.jpeg";
+import g2 from "/src/assets/g2.jpg";
+import g3 from "/src/assets/g3.jpeg";
+import g4 from "/src/assets/g4.jpeg";
+import g5 from "/src/assets/m17.jpg";
+import g6 from "/src/assets/g7.jpeg";
+import g7 from "/src/assets/g8.jpeg";
+import g8 from "/src/assets/g9.jpeg";
+import g9 from "/src/assets/g10.jpeg";
+import g10 from "/src/assets/g11.jpeg";
+import g11 from "/src/assets/g12.jpeg";
+import g12 from "/src/assets/g13.jpeg";
+import g13 from "/src/assets/g14.jpeg";
+import g14 from "/src/assets/k1.jpeg";
+import g15 from "/src/assets/k2.jpeg";
+import g16 from "/src/assets/k3.jpeg";
+
 const predefinedPhotos = {
   person: [
-    "/src/assets/m2.png",
-    "/src/assets/m3.webp",
-    "/src/assets/009.jpg",
-    "/src/assets/sm-pic2.webp",
-    "/src/assets/m4.png",
-    "/src/assets/m5.png",
-    "/src/assets/m14.png",
-    "/src/assets/m6.jpg",
-    "/src/assets/m7.jpg",
-    "/src/assets/m8.jpg",
-    "/src/assets/m1.png",
-    "/src/assets/m9.png",
-    "/src/assets/m10.png",
-    "/src/assets/m11.png",
-    "/src/assets/m12.png",
-    "/src/assets/m13.jpg",
+    m1,
+    m2,
+    m3,
+    m4,
+    m5,
+    m6,
+    m7,
+    m8,
+    m9,
+    m10,
+    m11,
+    m12,
+    m13,
+    m14,
+    m15,
+    m16,
   ],
   garment: [
-    "/src/assets/g1.jpeg",
-    "/src/assets/g2.jpg",
-    "/src/assets/g3.jpeg",
-    "/src/assets/g4.jpeg",
-    "/src/assets/m17.jpg",
-    "/src/assets/g7.jpeg",
-    "/src/assets/g8.jpeg",
-    "/src/assets/g9.jpeg",
-    "/src/assets/g10.jpeg",
-    "/src/assets/g11.jpeg",
-    "/src/assets/g13.jpeg",
-    "/src/assets/g14.jpeg",
-    "/src/assets/g15.jpeg",
-    "/src/assets/k1.jpeg",
-    "/src/assets/k2.jpeg",
-    "/src/assets/k3.jpeg",
+    g1,
+    g2,
+    g3,
+    g4,
+    g5,
+    g6,
+    g7,
+    g8,
+    g9,
+    g10,
+    g11,
+    g12,
+    g13,
+    g16,
+    g15,
+    g14,
   ],
 };
 
@@ -46,27 +81,16 @@ export default function LandingPage() {
   const [file2, setFile2] = useState(null);
   const [resultImage, setResultImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [timer, setTimer] = useState(0); // Timer in seconds
   const [pngImageURL, setPngImageURL] = useState(null); // PNG image URL
 
   useEffect(() => {
-    let interval;
-    if (isProcessing && timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => {
-          if (prevTimer <= 1) {
-            clearInterval(interval);
-            setIsProcessing(false);
-            return 0;
-          }
-          return prevTimer - 1;
-        });
-      }, 1000); // Update every second
-    } else if (!isProcessing) {
-      setTimer(120); // Reset timer when processing is stopped
-    }
-    return () => clearInterval(interval);
-  }, [isProcessing, timer]);
+    // Clean up object URL if resultImage changes
+    return () => {
+      if (resultImage) {
+        URL.revokeObjectURL(resultImage);
+      }
+    };
+  }, [resultImage]);
 
   const handleFileChange = (index, event) => {
     const file = event.target.files[0];
@@ -115,29 +139,26 @@ export default function LandingPage() {
     formData.append("garmentPhoto", file2);
 
     setIsProcessing(true);
-    setTimer(120); // Set the timer when processing starts
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/upload",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+      const response = await axios.post(api, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       const imageUrl = response.data.data.data[0].url; // Adjust according to your API response
       setResultImage(imageUrl);
       convertImageToPNG(imageUrl);
     } catch (error) {
       console.error("Error uploading photos:", error);
-      alert("Error uploading photos. Please try again.");
+      alert("Too many users, please try again later");
     } finally {
       setIsProcessing(false);
     }
   };
 
   const convertImageToPNG = (imageUrl) => {
+    console.log(imageUrl);
+
     const img = document.createElement("img");
     img.crossOrigin = "Anonymous";
     img.src = imageUrl;
@@ -166,15 +187,22 @@ export default function LandingPage() {
   };
 
   const downloadImage = () => {
-    if (!pngImageURL) return;
+    if (!pngImageURL || !file1) return; // Ensure both the PNG URL and person file exist
 
+    // Get the original file name of the person photo (excluding the extension)
+    const originalFileName = file1.name.split(".").slice(0, -1).join(".");
+
+    // Create the download link with the original file name and the .png extension
     const link = document.createElement("a");
     link.href = pngImageURL;
-    link.download = "result-image.png";
+    link.download = `${originalFileName}.png`; // Use the original file name with .png extension
 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // Revoke the object URL to release memory
+    URL.revokeObjectURL(pngImageURL);
   };
 
   const getButtonLabel = () => (isProcessing ? "Generating..." : "Generate");
@@ -247,7 +275,7 @@ export default function LandingPage() {
                     <>
                       <Camera size={48} className="w-16 h-16 text-gray-400" />
                       <span className="mt-2 text-sm text-gray-500">
-                        Add Photo {index}
+                        Upload {index === 1 ? "Person" : "Garment"} Photo
                       </span>
                     </>
                   )}
@@ -295,12 +323,7 @@ export default function LandingPage() {
               </h2>
               <div className="w-full h-80 bg-gray-100 rounded-lg flex flex-col items-center justify-center relative">
                 {isProcessing ? (
-                  <>
-                    <div className="spinner"></div> {/* Spinner */}
-                    <span className="text-gray-500 mt-4">
-                      Generating... {timer}s
-                    </span>
-                  </>
+                  <div className="spinner"></div>
                 ) : resultImage ? (
                   <>
                     <img
