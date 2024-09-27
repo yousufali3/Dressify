@@ -4,5 +4,6 @@
             "source": "/(?!api|static|favicon.ico)(.*)",
             "destination": "/"
         }
+        
     ]
 }
